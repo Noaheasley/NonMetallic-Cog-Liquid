@@ -30,7 +30,7 @@ namespace MathForGames
         /// <param name="icon">The symbol that will appear when drawn</param>
         /// <param name="color">The color of the symbol that will appear when drawn</param>
         public Player(float x, float y, char icon = ' ', ConsoleColor color = ConsoleColor.White)
-            : base(x, y, icon, color)
+            : base(x, y, icon,color)
         {
             
         }

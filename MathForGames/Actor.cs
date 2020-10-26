@@ -27,6 +27,11 @@ namespace MathForGames
             set { _facing = value; }
         }
 
+        public Actor()
+        {
+            _position = new Vector2();
+            _velocity = new Vector2();
+        }
 
         public Vector2 Position
         {
@@ -57,7 +62,7 @@ namespace MathForGames
         /// <param name="y">Position on the y axis</param>
         /// <param name="icon">The symbol that will appear when drawn</param>
         /// <param name="color">The color of the symbol that will appear when drawn</param>
-        public Actor(char icon = ' ', float y, float x, ConsoleColor color = ConsoleColor.White)
+        public Actor( float x, float y, char icon = ' ', ConsoleColor color = ConsoleColor.White)
         {
             _rayColor = Color.WHITE;
             _icon = icon;
@@ -74,7 +79,7 @@ namespace MathForGames
         /// <param name="icon">The symbol that will appear when drawn</param>
         /// <param name="color">The color of the symbol that will appear when drawn to the console</param>
         public Actor(float x, float y, Color rayColor, char icon = ' ', ConsoleColor color = ConsoleColor.White)
-            : this(x,y,icon,color)
+            : this(x,y, icon, color)
         {
             _rayColor = rayColor;
         }
@@ -88,7 +93,7 @@ namespace MathForGames
             if (_velocity.Magnitude <= 0)
                 return;
 
-            Forward = Velocity.Normalized;
+            _facing = Velocity.Normalized;
         }
 
         public virtual void Start()
@@ -101,36 +106,25 @@ namespace MathForGames
         {
             //Before the actor is moved, update the direction it's facing
             UpdateFacing();
-
-            //Increase position by the current velocity
-            _position += _velocity;
+            _position += _velocity * deltaTime;
+            _position.X = Math.Clamp(_position.X, 0, Console.WindowWidth - 1);
+            _position.Y = Math.Clamp(_position.Y, 0, Console.WindowHeight - 1);
         }
 
         public virtual void Draw()
         {
             //Draws the actor and a line indicating it facing to the raylib window.
             //Scaled to match console movement
-            Raylib.DrawText(_icon.ToString(), (int)_position.X * 32, (int)(_position.Y * 32), 32, _rayColor);
+            Raylib.DrawText(_icon.ToString(), (int)(_position.X * 32), (int)(_position.Y * 32), 20, _rayColor);
             Raylib.DrawLine(
-                (int)Position.X * 32,
+                (int)(Position.X * 32),
                 (int)(Position.Y * 32),
                 (int)((Position.X + Forward.X) * 32),
                 (int)((Position.Y + Forward.Y) * 32),
-                Color.WHITE
-            );
+                _rayColor);
 
-            //Changes the color of the console text to be this actors color
             Console.ForegroundColor = _color;
-
-            //Only draws the actor on the console if it is within the bounds of the window
-            if(Position.X >= 0 && Position.X < Console.WindowWidth 
-                && Position.Y >= 0  && Position.Y < Console.WindowHeight)
-            {
-                Console.SetCursorPosition((int)_position.X, (int)_position.Y);
-                Console.Write(_icon);
-            }
-            
-            //Reset console text color to be default color
+            Console.Write(_icon);
             Console.ForegroundColor = Game.DefaultColor;
         }
 

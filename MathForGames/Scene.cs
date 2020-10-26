@@ -12,14 +12,14 @@ namespace MathForGames
 
         public Scene()
         {
-
+            _actors = new Actor[0];
         }
 
         public void AddActor(Actor actor)
         {
             //Create a new array with a size one greater than our old array
             Actor[] appendedArray = new Actor[_actors.Length + 1];
-            //Copy the values from the old array to the new array
+            //Copy the values from the old array to the new array.
             for (int i = 0; i < _actors.Length; i++)
             {
                  appendedArray[i] = _actors[i];
@@ -33,7 +33,7 @@ namespace MathForGames
         public bool RemoveActor(int index)
         {
             //Check to see if the index is outside the bounds of our array
-            if(index < 0 || index >= _actors.Length)
+            if(index >= 0 || index >= _actors.Length)
             {
                 return false;
             }
@@ -104,6 +104,10 @@ namespace MathForGames
 
         public virtual void Start()
         {
+            for(int i=0; i < _actors.Length; i++)
+            {
+                _actors[i].Start();
+            }
             Started = true;
         }
 

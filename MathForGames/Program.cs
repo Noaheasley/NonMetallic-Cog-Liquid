@@ -34,7 +34,7 @@ namespace raygamecsharp
             //Create a new instance of the game class
             Game game = new Game();
 
-            //Call run to begin the game.
+            //Call run to begin the game
             game.Run();
 
             return 0;

@@ -31,7 +31,7 @@ namespace MathForGames
                 _speed = value;
             }
         }
-
+      
         public Actor Target
         {
             get { return _target; }
@@ -67,7 +67,7 @@ namespace MathForGames
         /// <param name="icon">The symbol that will appear when drawn</param>
         /// <param name="color">The color of the symbol that will appear when drawn</param>
         public Enemy(float x, float y, Vector2 patrolPointA, Vector2 patrolPointB, char icon = ' ', ConsoleColor color = ConsoleColor.White)
-            : base(x, y, icon, color)
+            : base( x, y, icon, color)
         {
             PatrolPointA = patrolPointA;
             PatrolPointB = patrolPointB;
@@ -101,10 +101,10 @@ namespace MathForGames
         {
             //Checks if the target has a value before continuing
             if (Target == null)
-                return true;
+                return false;
 
             //Find the vector representing the distance between the actor and its target
-            Vector2 direction = Position - Target.Position;
+            Vector2 direction =  Target.Position - Position;
             //Get the magnitude of the distance vector
             float distance = direction.Magnitude;
             //Use the inverse cosine to find the angle of the dot product in radians
@@ -116,7 +116,6 @@ namespace MathForGames
 
             return false;
         }
-
         /// <summary>
         /// Updates the current location the enemy is traveling to
         /// once its reached a patrol point.
@@ -145,10 +144,12 @@ namespace MathForGames
             if(CheckTargetInSight(1.5f, 5))
             {
                 _rayColor = Color.RED;
+                _icon = '!';
                 Target.Position = new Vector2();
             }
             else
             {
+                _icon = '?';
                 _rayColor = Color.BLUE;
             }
             UpdatePatrolLocation();
